@@ -1,3 +1,5 @@
+![CI](https://github.com/Comm5/SmtpClient-for-Qt/workflows/CI/badge.svg)
+
 SMTP Client for Qt (C++) - Version 1.1
 =============================================
 
