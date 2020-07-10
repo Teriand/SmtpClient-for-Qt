@@ -46,7 +46,10 @@ SmtpClient::SmtpClient(const QString & host, int port, ConnectionType connection
             this, SLOT(socketReadyRead()));
 }
 
-SmtpClient::~SmtpClient() {}
+SmtpClient::~SmtpClient() {
+    if (socket)
+        delete socket;
+}
 
 /* [1] --- */
 

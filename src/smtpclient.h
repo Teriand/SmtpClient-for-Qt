@@ -24,6 +24,7 @@
 #include <QEventLoop>
 #include "smtpmime_global.h"
 #include "mimemessage.h"
+#include "smtpexports.h"
 
 
 class SMTP_MIME_EXPORT SmtpClient : public QObject
@@ -121,6 +122,15 @@ public:
 
     QString getResponseText() const;
     int getResponseCode() const;
+
+    int getConnectionTimeout() const;
+    void setConnectionTimeout(int msec);
+
+    int getResponseTimeout() const;
+    void setResponseTimeout(int msec);
+    
+    int getSendMessageTimeout() const;
+    void setSendMessageTimeout(int msec);
 
     QTcpSocket* getSocket();
 

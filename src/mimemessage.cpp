@@ -25,16 +25,23 @@
 #include <typeinfo>
 
 /* [1] Constructors and Destructors */
-
 MimeMessage::MimeMessage(bool createAutoMimeContent) :
+    replyTo(Q_NULLPTR),
     hEncoding(MimePart::_8Bit)
 {
     if (createAutoMimeContent)
         this->content = new MimeMultiPart();
+
+    autoMimeContentCreated = createAutoMimeContent;
 }
 
 MimeMessage::~MimeMessage()
 {
+    if (this->autoMimeContentCreated)
+    {
+      this->autoMimeContentCreated = false;
+      delete (this->content);
+    }
 }
 
 /* [1] --- */
@@ -46,7 +53,16 @@ MimePart& MimeMessage::getContent() {
 }
 
 void MimeMessage::setContent(MimePart *content) {
+    if (this->autoMimeContentCreated)
+    {
+      this->autoMimeContentCreated = false;
+      delete (this->content);
+    }
     this->content = content;
+}
+
+void MimeMessage::setReplyTo(const EmailAddress &rto) {
+    replyTo = rto;
 }
 
 void MimeMessage::setSender(const EmailAddress &sender)
@@ -222,6 +238,29 @@ void MimeMessage::writeToDevice(QIODevice &out) const {
         header.append(hdr.toLocal8Bit());
         header.append("\r\n");
     }
+    /* ---------------------------------- */
+
+    /* ---------- Reply-To -------------- */
+    if (!replyTo.isNull()) {
+        header.append("Reply-To: ");
+        if (!replyTo.getName().isEmpty())
+        {
+            switch (hEncoding)
+            {
+            case MimePart::Base64:
+                header.append(" =?utf-8?B?" + QByteArray().append(replyTo.getName()).toBase64() + "?=");
+                break;
+            case MimePart::QuotedPrintable:
+                header.append(" =?utf-8?Q?" + QuotedPrintable::encode(QByteArray().append(replyTo.getName())).replace(' ', "_").replace(':',"=3A") + "?=");
+                break;
+            default:
+                header.append(" " + replyTo.getName());
+            }
+        }
+        header.append(" <" + replyTo.getAddress() + ">\r\n");
+    }
+
+    /* ---------------------------------- */
 
     header.append("MIME-Version: 1.0\r\n");
 

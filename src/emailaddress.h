@@ -39,10 +39,13 @@ public:
     /* [2] Getters and Setters */
 
     QString getAddress() const;
+    void setAddress(const QString& value) { address = value; }
+    
     QString getName() const;
-
+    void setName(const QString& value) { name = value; }
     /* [2] --- */
 
+    bool isNull() const { return address.isEmpty(); }
 
 private:
 
