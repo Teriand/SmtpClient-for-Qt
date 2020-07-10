@@ -2,7 +2,7 @@ if (POLICY CMP0048)
   cmake_policy(SET CMP0048 NEW)
 endif (POLICY CMP0048)
 
-project(SMTPEmail VERSION 1.1.0 LANGUAGES CXX)
+project(SmtpMime VERSION 2.0.0 LANGUAGES CXX)
 
 cmake_minimum_required(VERSION 3.16.0)
 SET(CMAKE_COLOR_MAKEFILE ON)
@@ -49,6 +49,11 @@ set(SOURCES
     src/smtpclient.cpp
     src/quotedprintable.cpp
     src/mimemultipart.cpp
+    src/mimecontentencoder.cpp
+    src/mimebase64encoder.cpp
+    src/mimeqpencoder.cpp
+    src/mimeqpformatter.cpp
+    src/mimebase64formatter.cpp
     src/mimecontentformatter.cpp
 )
 

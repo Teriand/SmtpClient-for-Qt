@@ -19,19 +19,17 @@
 #ifndef EMAILADDRESS_H
 #define EMAILADDRESS_H
 
-#include <QObject>
+#include "smtpmime_global.h"
+#include <QString>
 
-#include "smtpexports.h"
-
-class SMTP_EXPORT EmailAddress : public QObject
+class SMTP_MIME_EXPORT EmailAddress
 {
-    Q_OBJECT
 public:
 
     /* [1] Constructors and Destructors */
 
-    EmailAddress();
-    EmailAddress(const QString & address, const QString & name="");
+    EmailAddress(const QString & address = "", const QString & name = "");
+    EmailAddress(const EmailAddress &other);
 
     ~EmailAddress();
 
@@ -39,21 +37,22 @@ public:
 
 
     /* [2] Getters and Setters */
-    void setName(const QString & name);
-    void setAddress(const QString & address);
 
-    const QString & getName() const;
-    const QString & getAddress() const;
-
+    QString getAddress() const;
+    void setAddress(const QString& value) { address = value; }
+    
+    QString getName() const;
+    void setName(const QString& value) { name = value; }
     /* [2] --- */
 
+    bool isNull() const { return address.isEmpty(); }
 
 private:
 
     /* [3] Private members */
 
-    QString name;
     QString address;
+    QString name;
 
     /* [3] --- */
 };
