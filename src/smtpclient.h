@@ -24,7 +24,6 @@
 #include <QEventLoop>
 #include "smtpmime_global.h"
 #include "mimemessage.h"
-#include "smtpexports.h"
 
 
 class SMTP_MIME_EXPORT SmtpClient : public QObject

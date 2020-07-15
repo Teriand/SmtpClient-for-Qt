@@ -15,11 +15,6 @@ set(CMAKE_INCLUDE_CURRENT_DIR ON)
 find_package( Qt5 REQUIRED COMPONENTS Core Network )
 
 
-include_directories(
-	${CMAKE_CURRENT_SOURCE_DIR}
-    ${Boost_INCLUDE_DIRS}
-)
-
 set(HEADERS
     src/emailaddress.h
     src/mimeattachment.h
@@ -34,7 +29,7 @@ set(HEADERS
     src/quotedprintable.h
     src/mimemultipart.h
     src/mimecontentformatter.h
-    src/smtpexports.h
+    src/smtpmime_global.h
 )
 
 set(SOURCES
@@ -57,16 +52,15 @@ set(SOURCES
     src/mimecontentformatter.cpp
 )
 
+add_library(${PROJECT_NAME} SHARED ${SOURCES} ${HEADERS})
 
-add_definitions(
-	-DSMTP_BUILD
+target_compile_definitions(${PROJECT_NAME}
+	PRIVATE SMTP_MIME_LIBRARY
 )
 
-add_library(${PROJECT_NAME} SHARED ${SOURCES} ${HEADERS})
 target_link_libraries(${PROJECT_NAME}
-	 PUBLIC Qt5::Core Qt5::Network)
-
-set_target_properties(${PROJECT_NAME} PROPERTIES FOLDER Libraries/QtC5Extended)
+     PUBLIC Qt5::Core Qt5::Network
+)
 
 target_include_directories(${PROJECT_NAME} PUBLIC src)
 
