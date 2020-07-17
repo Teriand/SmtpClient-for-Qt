@@ -56,6 +56,14 @@ SmtpClient::~SmtpClient() {
 
 /* [2] Getters and Setters */
 /**
+ * @brief Set host name of the server.
+ */
+void SmtpClient::setHost(const QString& address)
+{
+    this->host = address;
+}
+
+/**
  * @brief Returns the host name of the server.
  */
 QString SmtpClient::getHost() const

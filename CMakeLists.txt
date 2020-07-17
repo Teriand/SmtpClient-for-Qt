@@ -11,8 +11,9 @@ set(CMAKE_AUTOMOC ON)
 
 set(CMAKE_INCLUDE_CURRENT_DIR ON)
 
+option(SMTPMIME_EXAMPES "Build examples" ON)
 
-find_package( Qt5 REQUIRED COMPONENTS Core Network )
+find_package( Qt5 REQUIRED COMPONENTS Core Network OPTIONAL_COMPONENTS Widgets)
 
 
 set(HEADERS
@@ -66,3 +67,7 @@ target_include_directories(${PROJECT_NAME} PUBLIC src)
 
 include(CMakePackageConfigHelpers)
 write_basic_package_version_file( ${CMAKE_CURRENT_BINARY_DIR}/${PROJECT_NAME}ConfigVersion.cmake VERSION ${PROJECT_VERSION} COMPATIBILITY SameMajorVersion)
+
+if(SMTPMIME_EXAMPLES)
+    add_subdirectory(demos)
+endif()

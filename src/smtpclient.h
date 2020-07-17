@@ -24,12 +24,13 @@
 #include <QEventLoop>
 #include "smtpmime_global.h"
 #include "mimemessage.h"
+#include "smtpmime_global.h"
 
 
 class SMTP_MIME_EXPORT SmtpClient : public QObject
 {
     Q_OBJECT
-    Q_ENUMS (AuthMethod SmtpError ConnectionType ClientState)
+    Q_PROPERTY(QString host READ getHost WRITE setHost);
 public:
 
     /* [0] Enumerations */
@@ -39,6 +40,7 @@ public:
         AuthPlain,
         AuthLogin
     };
+    Q_ENUM(AuthMethod)
 
     enum SmtpError
     {
@@ -50,6 +52,7 @@ public:
         ClientError = 5,    // 5xx smtp error
         SocketError = 6
     };
+    Q_ENUM(SmtpError)
 
     enum ConnectionType
     {
@@ -57,6 +60,7 @@ public:
         SslConnection = 1,
         TlsConnection = 2      // STARTTLS
     };
+    Q_ENUM(ConnectionType)
 
     enum ClientState {
         UnconnectedState = 0,
@@ -111,8 +115,9 @@ public:
 
 
     /* [2] Getters and Setters */
-
     QString getHost() const;
+    void setHost(const QString& address);
+
     int getPort() const;
     ConnectionType getConnectionType() const;
 
@@ -170,7 +175,7 @@ protected:
     QTcpSocket *socket;
     ClientState state;
 
-    const QString host;
+    QString host;
     const int port;
     ConnectionType connectionType;
 
