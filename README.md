@@ -12,31 +12,26 @@ The SmtpClient for Qt is small library writen for Qt 4 (C++ version) that allows
 * code of SmtpClient refactored and partially rewrited
 * CMake build support
 
-## New in version 1.1:
-
-- TLS (STARTTLS) connection is now supported
-- multiple types of recipients (to, cc, bcc)
-- nested mime emails (mixed/alternative, mixed/related)
-- output compilant with RFC2045
-
-
 ## SMTP Client for Qt supports
 
-- TCP and SSL connections to SMTP servers
+- TCP, SSL and TLS connections to SMTP servers
 - SMTP authentication (PLAIN and LOGIN methods)
 - sending MIME emails (to multiple recipients)
+- multiple types of recipients (to, cc, bcc)
 - plain text and HTML (with inline files) content in emails
 - multiple attachments and inline files (used in HTML)
+- nested mime emails (mixed/alternative, mixed/related)
 - different character sets (ascii, utf-8, etc) and encoding methods (7bit, 8bit, base64)
 - error handling
+- output compilant with RFC2045
 
 ## Examples
 
 Lets see a simple example:
 
 ```c++
-#include <QtGui/QApplication>
-#include "../src/SmtpMime"
+#include <QApplication>
+#include <SmtpMime>
 
 int main(int argc, char *argv[])
 {
@@ -53,8 +48,8 @@ int main(int argc, char *argv[])
 
     MimeMessage message;
 
-    message.setSender(new EmailAddress("your_email_address@gmail.com", "Your Name"));
-    message.addRecipient(new EmailAddress("recipient@host.com", "Recipient's Name"));
+    message.setSender(EmailAddress("your_email_address@gmail.com", "Your Name"));
+    message.addRecipient(EmailAddress("recipient@host.com", "Recipient's Name"));
     message.setSubject("SmtpClient for Qt - Demo");
 
     // Now add some text to the email.
@@ -74,7 +69,8 @@ int main(int argc, char *argv[])
     smtp.waitForReadyConnected();
 
     // We need to set the username (your email address) and the password
-    // for smtp authentification.    smtp.login("your_email_address@gmail.com", "your_password");
+    // for smtp authentification.    
+    smtp.login("your_email_address@gmail.com", "your_password");
     smtp.waitForAuthenticated();
 
     smtp.sendMail(message);
