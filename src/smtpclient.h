@@ -157,6 +157,10 @@ public:
     bool waitForMailSent(int msec = 30000);
     bool waitForReset(int msec = 30000);
 
+    void ignoreSslErrors(const QList<QSslError>& errors);
+
+public slots:
+    void ignoreSslErrors();
     /* [3] --- */
 
 protected:
@@ -238,6 +242,8 @@ signals:
     void mailSent();
     void mailReset();
     void disconnected();
+
+    void sslErrors(const QList<QSslError>& errors);
 
     /* [7] --- */
 

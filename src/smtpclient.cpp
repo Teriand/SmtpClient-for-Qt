@@ -231,6 +231,20 @@ bool SmtpClient::waitForReset(int msec)
     return isReset;
 }
 
+void SmtpClient::ignoreSslErrors(const QList<QSslError>& errors)
+{
+    auto sslSocket = qobject_cast<QSslSocket*>(socket);
+    if (sslSocket)
+        sslSocket->ignoreSslErrors(errors);
+}
+
+void SmtpClient::ignoreSslErrors()
+{
+    auto sslSocket = qobject_cast<QSslSocket*>(socket);
+    if (sslSocket)
+        sslSocket->ignoreSslErrors();
+}
+
 /* [3] --- */
 
 
