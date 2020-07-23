@@ -613,6 +613,15 @@ void SmtpClient::socketError(QAbstractSocket::SocketError socketError) {
 #else
     Q_UNUSED(socketError);
 #endif
+    // Errors that need reset to UnconnectedState
+    switch (socketError) {
+    case QAbstractSocket::SslInternalError:
+        changeState(UnconnectedState);
+        break;
+    default:
+        break;
+    }
+    
     emit error(SocketError);
 }
 
