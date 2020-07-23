@@ -20,8 +20,9 @@
 #define SMTPCLIENT_H
 
 #include <QObject>
-#include <QtNetwork/QSslSocket>
+#include <QSslSocket>
 #include <QEventLoop>
+
 #include "smtpmime_global.h"
 #include "mimemessage.h"
 #include "smtpmime_global.h"

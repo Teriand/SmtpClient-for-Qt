@@ -1,3 +1,7 @@
+# -DSmtpMime_EXAMPLES=[true|false]
+#  Build the examples.
+#  Default=true
+
 if (POLICY CMP0048)
   cmake_policy(SET CMP0048 NEW)
 endif (POLICY CMP0048)
@@ -15,6 +19,9 @@ option(SMTPMIME_EXAMPES "Build examples" ON)
 
 find_package( Qt5 REQUIRED COMPONENTS Core Network OPTIONAL_COMPONENTS Widgets)
 
+set(CMAKE_RUNTIME_OUTPUT_DIRECTORY "${CMAKE_CURRENT_BINARY_DIR}/bin")
+set(CMAKE_LIBRARY_OUTPUT_DIRECTORY "${CMAKE_CURRENT_BINARY_DIR}/lib")
+set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY "${CMAKE_CURRENT_BINARY_DIR}/lib")
 
 set(HEADERS
     src/emailaddress.h

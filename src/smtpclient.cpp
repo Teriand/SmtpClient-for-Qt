@@ -262,8 +262,8 @@ void SmtpClient::setConnectionType(ConnectionType ct)
     case SslConnection:
     case TlsConnection:
         socket = new QSslSocket(this);
-        connect(socket, SIGNAL(encrypted()),
-                this, SLOT(socketEncrypted()));
+        connect((QSslSocket*)socket, &QSslSocket::encrypted, this, &SmtpClient::socketEncrypted);
+        connect((QSslSocket*)socket, qOverload<const QList<QSslError>&>(&QSslSocket::sslErrors), this, &SmtpClient::sslErrors);
         break;
     }
 }
