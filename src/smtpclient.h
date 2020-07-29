@@ -102,20 +102,12 @@ public:
         _MAIL_3_DATA = 84,
         _MAIL_4_SEND_DATA = 85
     };
+    Q_ENUM(ClientState)
 
-    /* [0] --- */
-
-
-    /* [1] Constructors and Destructors */
 
     SmtpClient(const QString & host = "localhost", int port = 25, ConnectionType ct = TcpConnection);
-
     ~SmtpClient();
 
-    /* [1] --- */
-
-
-    /* [2] Getters and Setters */
     QString getHost() const;
     void setHost(const QString& address);
 
