@@ -16,6 +16,7 @@ set(CMAKE_AUTOMOC ON)
 set(CMAKE_INCLUDE_CURRENT_DIR ON)
 
 option(SMTPMIME_EXAMPES "Build examples" ON)
+option(SMTPMIME_STATIC "Build library static" OFF)
 
 find_package( Qt5 REQUIRED COMPONENTS Core Network OPTIONAL_COMPONENTS Widgets)
 
@@ -60,17 +61,30 @@ set(SOURCES
     src/mimecontentformatter.cpp
 )
 
-add_library(${PROJECT_NAME} SHARED ${SOURCES} ${HEADERS})
+if (NOT SMTPMIME_STATIC)
+    add_library(${PROJECT_NAME} SHARED ${SOURCES} ${HEADERS})
 
-target_compile_definitions(${PROJECT_NAME}
-	PRIVATE SMTP_MIME_LIBRARY
-)
+    target_compile_definitions(${PROJECT_NAME}
+	    PRIVATE SMTP_MIME_LIBRARY
+    )
+else()
+    add_library(${PROJECT_NAME} STATIC ${SOURCES} ${HEADERS})
+
+    target_compile_definitions(${PROJECT_NAME}
+        PUBLIC SMTP_MIME_LIBRARY_STATIC
+    )
+endif()
 
 target_link_libraries(${PROJECT_NAME}
      PUBLIC Qt5::Core Qt5::Network
 )
-
+set_target_properties(${PROJECT_NAME} PROPERTIES VERSION ${${PROJECT_NAME}_VERSION})
 target_include_directories(${PROJECT_NAME} PUBLIC src)
+
+if(WIN32)
+    set(CMAKE_DEBUG_POSTFIX "d")
+    set_target_properties(${PROJECT_NAME} PROPERTIES DEBUG_POSTFIX ${CMAKE_DEBUG_POSTFIX})
+endif()
 
 include(CMakePackageConfigHelpers)
 write_basic_package_version_file( ${CMAKE_CURRENT_BINARY_DIR}/${PROJECT_NAME}ConfigVersion.cmake VERSION ${PROJECT_VERSION} COMPATIBILITY SameMajorVersion)
