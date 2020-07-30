@@ -24,7 +24,11 @@
 #include "quotedprintable.h"
 #include <typeinfo>
 
-/* [1] Constructors and Destructors */
+/*!
+    \class MimeMessage
+    \brief Represents a message where content, recipients and sender are added.
+*/
+
 MimeMessage::MimeMessage(bool createAutoMimeContent) :
     replyTo(Q_NULLPTR),
     hEncoding(MimePart::_8Bit)

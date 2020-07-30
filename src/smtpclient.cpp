@@ -16,6 +16,34 @@
   See the LICENSE file for more details.
 */
 
+/*!
+    \class SmtpClient
+    \brief The SmtpClient class provides a convenient API send e-mails thru an SMTP Server.
+
+    SmtpClient encapsulates a connection to an SMTP Server and interprets the SMTP
+    protocol.
+
+    To start a new connection you must specify host, port and \sa ConnectionType
+    in the constructor
+*/
+
+/*!
+    \enum SmtpClient::ConnectionType
+
+    Describes keys that you can pass to SmtpClient constructor to specify
+    connection encryption type to use.
+
+    \value TcpConnection Simple TCP connection without encryption.
+
+    \value SslConnection Starts the connection with encryption, the same as 
+    QSslSocket::connectToHostEncrypted().
+
+    \value TlsConnection Starts the connection without encryption and later
+    switches to encryption after issue STARTTLS smtp command. It's the same
+    as QSslSocket::startClientEncryption()
+
+*/
+
 #include "smtpclient.h"
 
 #include <QFileInfo>
@@ -24,8 +52,13 @@
 #include <QEventLoop>
 #include <QMetaEnum>
 
-/* [1] Constructors and destructors */
 
+/*!
+    \fn SmtpClient::SmtpClient(const QString & host, int port, ConnectionType connectionType)
+
+    Constructs an smtp client connection for sending email thru a server \a host
+    and \a port using the given \a connectionType.
+*/
 SmtpClient::SmtpClient(const QString & host, int port, ConnectionType connectionType) :
     state(UnconnectedState),
     host(host),
@@ -51,76 +84,72 @@ SmtpClient::~SmtpClient() {
         delete socket;
 }
 
-/* [1] --- */
-
-
-/* [2] Getters and Setters */
-/**
- * @brief Set host name of the server.
+/*!
+ * \brief Set host name of the server.
  */
 void SmtpClient::setHost(const QString& address)
 {
     this->host = address;
 }
 
-/**
- * @brief Returns the host name of the server.
+/*!
+ * \brief Returns the host name of the server.
  */
 QString SmtpClient::getHost() const
 {
     return this->host;
 }
 
-/**
- * @brief Return the port.
+/*!
+ * \brief Return the port.
  */
 int SmtpClient::getPort() const
 {
     return this->port;
 }
 
-/**
- * @brief Returns the connection type used.
+/*!
+ * \brief Returns the connection type used.
  */
 SmtpClient::ConnectionType SmtpClient::getConnectionType() const
 {
     return connectionType;
 }
 
-/**
- * @brief Returns the client's name.
+/*!
+ * \brief Returns the client's name.
  */
 QString SmtpClient::getName() const
 {
     return this->name;
 }
 
-/**
- * @brief Sets the client's name. This name is sent by the EHLO command.
+/*!
+ * \brief Sets the client's name. This name is sent by the EHLO command.
  */
 void SmtpClient::setName(const QString &name)
 {
     this->name = name;
 }
 
-/**
- * @brief Returns the last response of the server.
+/*!
+ * \brief Returns the last response of the server.
  */
 QString SmtpClient::getResponseText() const
 {
     return responseText;
 }
 
-/**
- * @brief Returns the last response code recived by the client.
+/*!
+ * \brief Returns the last response code recieved by the client.
  */
 int SmtpClient::getResponseCode() const
 {
     return responseCode;
 }
 
-/**
- * @brief Return the socket used by the client. The type of the of the
+/*!
+ * \brief Return the socket used by the client. The type of the of the
  * connection is QTcpConnection in case of TcpConnection, and QSslSocket
  * for SslConnection and TlsConnection.
  */

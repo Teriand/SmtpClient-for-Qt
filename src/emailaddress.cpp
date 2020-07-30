@@ -18,7 +18,14 @@
 
 #include "emailaddress.h"
 
-/* [1] Constructors and Destructors */
+/*!
+    \class EmailAddress
+    \brief Represent an e-mail address and display name.
+
+    EmailAddress is used to specify both sender and reicipents of
+    e-mail messages.
+    \sa SmtpClient
+*/
 
 EmailAddress::EmailAddress(const QString & address, const QString & name)
     : address(address), name(name)
@@ -30,25 +37,22 @@ EmailAddress::EmailAddress(const EmailAddress &other)
 {
 }
 
-EmailAddress::~EmailAddress()
-{
-}
 
-/* [1] --- */
-
-
-/* [2] Getters and Setters */
-
-
+/*!
+    Returns the user friendly name for this address. Usually this is the 
+    person's name.
+*/
 QString EmailAddress::getName() const
 {
     return name;
 }
 
+/*!
+    Returns the e-mail address in the form user@domain
+*/
 QString EmailAddress::getAddress() const
 {
     return address;
 }
 
-/* [2] --- */
 

@@ -31,8 +31,6 @@ public:
     EmailAddress(const QString & address = QString(), const QString & name = QString());
     EmailAddress(const EmailAddress &other);
 
-    ~EmailAddress();
-
     /* [1] --- */
 
 
