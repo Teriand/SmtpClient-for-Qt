@@ -105,7 +105,7 @@ public:
     Q_ENUM(ClientState)
 
 
-    SmtpClient(const QString & host = "localhost", int port = 25, ConnectionType ct = TcpConnection);
+    SmtpClient(const QString& host = "localhost", int port = 25, ConnectionType ct = TcpConnection);
     ~SmtpClient();
 
     QString getHost() const;

@@ -193,6 +193,11 @@ void SmtpClient::sendMail(const MimeMessage & email)
 
     this->email = &email;
     this->rcptType = 0;
+    if (!isAuthenticated) {
+        login();
+        waitForAuthenticated();
+    }
+
     changeState(MailSendingState);
 }
 
@@ -300,16 +305,10 @@ void SmtpClient::setConnectionType(ConnectionType ct)
 void SmtpClient::changeState(SmtpClient::ClientState state) {
     this->state = state;
 
-#ifdef QT_NO_DEBUG
-    // Emit stateChanged signal only for non-internal states
-    if (state <= DisconnectingState) {
-        emit stateChanged(state);
-    }
-#else
-    // emit all in debug mode
+#ifndef QT_NO_DEBUG
     qDebug() << "[SmtpClient] State:" << staticMetaObject.enumerator(staticMetaObject.indexOfEnumerator("ClientState")).valueToKey(state);
-    emit stateChanged(state);
 #endif
+    emit stateChanged(state);
 
     switch (state)
     {
@@ -598,6 +597,7 @@ void SmtpClient::sendMessage(const QString &text)
 #ifndef QT_NO_DEBUG
     qDebug() << "[Socket] OUT:" << text;
 #endif
+    responseText.clear();
 
     socket->flush();
     socket->write(text.toUtf8() + "\r\n");
@@ -687,7 +687,7 @@ void SmtpClient::socketReadyRead()
     // Is this the last line of the response
     if (responseLine[3] == ' ') {
         responseText = tempResponse;
-        tempResponse = "";
+        tempResponse.clear();
 
         // Extract the respose code from the server's responce (first 3 digits)
         responseCode = responseLine.left(3).toInt();
