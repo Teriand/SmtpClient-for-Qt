@@ -37,6 +37,10 @@ EmailAddress::EmailAddress(const EmailAddress &other)
 {
 }
 
+EmailAddress::EmailAddress(EmailAddress&& other)
+    : address(std::move(other.address)), name(std::move(other.name))
+{
+}
 
 /*!
     Returns the user friendly name for this address. Usually this is the 
@@ -55,4 +59,14 @@ QString EmailAddress::getAddress() const
     return address;
 }
 
+EmailAddress& EmailAddress::operator=(const EmailAddress& other) {
+    address = other.address;
+    name = other.name;
+    return *this;
+}
 
+EmailAddress& EmailAddress::operator=(EmailAddress&& other) {
+    address = std::move(other.address);
+    name = std::move(other.name);
+    return *this;
+}

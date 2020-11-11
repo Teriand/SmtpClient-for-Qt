@@ -30,6 +30,7 @@ public:
 
     EmailAddress(const QString & address = QString(), const QString & name = QString());
     EmailAddress(const EmailAddress &other);
+    EmailAddress(EmailAddress&& other);
 
     /* [1] --- */
 
@@ -45,6 +46,9 @@ public:
 
     bool isNull() const { return address.isEmpty(); }
 
+    EmailAddress& operator=(const EmailAddress& other);
+    EmailAddress& operator=(EmailAddress&& other);
+
 private:
 
     /* [3] Private members */
@@ -54,5 +58,6 @@ private:
 
     /* [3] --- */
 };
+
 
 #endif // EMAILADDRESS_H

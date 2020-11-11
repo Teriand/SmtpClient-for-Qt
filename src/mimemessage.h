@@ -63,7 +63,7 @@ public:
     const QList<EmailAddress> &getRecipients(RecipientType type = To) const;
     QString getSubject() const;
     const QStringList &getCustomHeaders() const;
-    const QList<MimePart*> & getParts() const;
+    const QList<MimePart*> getParts() const;
     const EmailAddress* getReplyTo() const;
 
     MimePart& getContent();

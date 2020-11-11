@@ -30,11 +30,11 @@
 */
 
 MimeMessage::MimeMessage(bool createAutoMimeContent) :
-    replyTo(Q_NULLPTR),
+    content(Q_NULLPTR),
     hEncoding(MimePart::_8Bit)
 {
     if (createAutoMimeContent)
-        this->content = new MimeMultiPart();
+        content = new MimeMultiPart();
 
     autoMimeContentCreated = createAutoMimeContent;
 }
@@ -42,10 +42,7 @@ MimeMessage::MimeMessage(bool createAutoMimeContent) :
 MimeMessage::~MimeMessage()
 {
     if (this->autoMimeContentCreated)
-    {
-      this->autoMimeContentCreated = false;
-      delete (this->content);
-    }
+        delete content;
 }
 
 /* [1] --- */
@@ -56,11 +53,10 @@ MimePart& MimeMessage::getContent() {
     return *content;
 }
 
-void MimeMessage::setContent(MimePart *content) {
-    if (this->autoMimeContentCreated)
-    {
-      this->autoMimeContentCreated = false;
-      delete (this->content);
+void MimeMessage::setContent(MimePart* content) {
+    if (this->autoMimeContentCreated) {
+        this->autoMimeContentCreated = false;
+        delete this->content;
     }
     this->content = content;
 }
@@ -102,35 +98,30 @@ void MimeMessage::addBcc(const EmailAddress &rcpt) {
     this->recipientsBcc << rcpt;
 }
 
-void MimeMessage::addCustomHeader(const QString &header)
-{
+void MimeMessage::addCustomHeader(const QString &header) {
     this->customHeaders << header;
 }
 
-void MimeMessage::setSubject(const QString & subject)
-{
+void MimeMessage::setSubject(const QString & subject) {
     this->subject = subject;
 }
 
-void MimeMessage::addPart(MimePart *part)
-{
-    if (typeid(*content) == typeid(MimeMultiPart)) {
-        ((MimeMultiPart*) content)->addPart(part);
+void MimeMessage::addPart(MimePart* part) {
+    auto multipart = dynamic_cast<MimeMultiPart*>( content );
+    if (multipart) {
+        multipart->addPart(part);
     };
 }
 
-void MimeMessage::setHeaderEncoding(MimePart::Encoding hEnc)
-{
+void MimeMessage::setHeaderEncoding(MimePart::Encoding hEnc) {
     this->hEncoding = hEnc;
 }
 
-EmailAddress MimeMessage::getSender() const
-{
+EmailAddress MimeMessage::getSender() const {
     return sender;
 }
 
-const QList<EmailAddress> & MimeMessage::getRecipients(RecipientType type) const
-{
+const QList<EmailAddress> & MimeMessage::getRecipients(RecipientType type) const {
     switch (type)
     {
     default:
@@ -143,20 +134,18 @@ const QList<EmailAddress> & MimeMessage::getRecipients(RecipientType type) const
     }
 }
 
-QString MimeMessage::getSubject() const
-{
+QString MimeMessage::getSubject() const {
     return subject;
 }
 
-const QList<MimePart*> & MimeMessage::getParts() const
-{
-    if (typeid(*content) == typeid(MimeMultiPart)) {
-        return ((MimeMultiPart*) content)->getParts();
-    }
-    else {
-        QList<MimePart*> *res = new QList<MimePart*>();
-        res->append(content);
-        return *res;
+const QList<MimePart*> MimeMessage::getParts() const {
+    auto multipart = dynamic_cast<MimeMultiPart*>( content );
+    if (multipart) {
+        return multipart->getParts();
+    } else {
+        QList<MimePart*> res;
+        res.append(content);
+        return res;
     }
 }
 
@@ -165,8 +154,7 @@ const QList<MimePart*> & MimeMessage::getParts() const
 
 /* [3] Public Methods */
 
-QString MimeMessage::toString() const
-{
+QString MimeMessage::toString() const {
     QBuffer out;
     out.open(QIODevice::WriteOnly);
     writeToDevice(out);
@@ -180,8 +168,7 @@ QByteArray MimeMessage::formatAddress(const EmailAddress &address, MimePart::Enc
     return result;
 }
 
-QByteArray MimeMessage::format(const QString &text, MimePart::Encoding encoding)
-{
+QByteArray MimeMessage::format(const QString &text, MimePart::Encoding encoding) {
     QByteArray result;
     if (!text.isEmpty())
     {
@@ -269,7 +256,8 @@ void MimeMessage::writeToDevice(QIODevice &out) const {
     header.append("MIME-Version: 1.0\r\n");
 
     out.write(header);
-    content->writeToDevice(out);
+    if( content )
+        content->writeToDevice(out);
 }
 
 /* [3] --- */
