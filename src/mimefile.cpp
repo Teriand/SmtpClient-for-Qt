@@ -56,11 +56,14 @@ MimeFile::~MimeFile()
 
 
 void MimeFile::writeContent(QIODevice &device) const {
-    file->open(QIODevice::ReadOnly);    
-    const QByteArray &fileContent = file->readAll();
-    file->close();
+    if(file){
+        file->open(QIODevice::ReadOnly);
+        const QByteArray &fileContent = file->readAll();
+        file->close();
+        MimePart::writeContent(device, fileContent);
+    }else
+        MimePart::writeContent(device);
 
-    MimePart::writeContent(device, fileContent);
 }
 
 /* [3] --- */
