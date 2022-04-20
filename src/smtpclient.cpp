@@ -71,12 +71,9 @@ SmtpClient::SmtpClient(const QString & host, int port, ConnectionType connection
 {
     setConnectionType(connectionType);
 
-    connect(socket, SIGNAL(stateChanged(QAbstractSocket::SocketState)),
-            this, SLOT(socketStateChanged(QAbstractSocket::SocketState)));
-    connect(socket, SIGNAL(error(QAbstractSocket::SocketError)),
-            this, SLOT(socketError(QAbstractSocket::SocketError)));
-    connect(socket, SIGNAL(readyRead()),
-            this, SLOT(socketReadyRead()));
+    connect(socket, &QAbstractSocket::stateChanged,this, &SmtpClient::socketStateChanged);
+    connect(socket, &QAbstractSocket::errorOccurred, this, &SmtpClient::socketError);
+    connect(socket, &QIODevice::readyRead, this, &SmtpClient::socketReadyRead);
 }
 
 SmtpClient::~SmtpClient() {
@@ -636,13 +633,13 @@ void SmtpClient::waitForEvent(int msec, const char *successSignal)
 {
     QEventLoop loop;
     QObject::connect(this, successSignal, &loop, SLOT(quit()));
-    QObject::connect(this, SIGNAL(error(SmtpClient::SmtpError)), &loop, SLOT(quit()));
+    QObject::connect(this, &SmtpClient::error, &loop, &QEventLoop::quit);
 
     if(msec > 0)
     {
         QTimer timer;
         timer.setSingleShot(true);
-        connect(&timer, SIGNAL(timeout()), &loop, SLOT(quit()));
+        connect(&timer, &QTimer::timeout, &loop, &QEventLoop::quit);
         timer.start(msec);
     }
 
