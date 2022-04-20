@@ -63,7 +63,7 @@ SmtpClient::SmtpClient(const QString & host, int port, ConnectionType connection
     state(UnconnectedState),
     host(host),
     port(port),
-    name("localhost"),
+    name(QStringLiteral("localhost")),
     isReadyConnected(false),
     isAuthenticated(false),
     isMailSent(false),
