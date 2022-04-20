@@ -164,7 +164,7 @@ QString MimeMessage::toString() const {
 QByteArray MimeMessage::formatAddress(const EmailAddress &address, MimePart::Encoding encoding) {
     QByteArray result;
     result.append(format(address.getName(), encoding));
-    result.append(" <" + address.getAddress() + ">");
+    result.append(" <" + address.getAddress().toLatin1() + ">");
     return result;
 }
 
@@ -178,7 +178,7 @@ QByteArray MimeMessage::format(const QString &text, MimePart::Encoding encoding)
             result.append(" =?utf-8?B?" + text.toUtf8().toBase64() + "?=");
             break;
         case MimePart::QuotedPrintable:
-            result.append(" =?utf-8?Q?" + QuotedPrintable::encode(text.toUtf8()).toLocal8Bit().replace(' ', "_").replace(':',"=3A") + "?=");
+            result.append(" =?utf-8?Q?" + QuotedPrintable::encode(text.toUtf8()).replace(' ', "_").replace(':',"=3A") + "?=");
             break;
         default:
             result.append(" ").append(text.toLocal8Bit());
@@ -239,16 +239,16 @@ void MimeMessage::writeToDevice(QIODevice &out) const {
             switch (hEncoding)
             {
             case MimePart::Base64:
-                header.append(" =?utf-8?B?" + QByteArray().append(replyTo.getName()).toBase64() + "?=");
+                header.append(" =?utf-8?B?" + replyTo.getName().toUtf8().toBase64() + "?=");
                 break;
             case MimePart::QuotedPrintable:
-                header.append(" =?utf-8?Q?" + QuotedPrintable::encode(QByteArray().append(replyTo.getName())).replace(' ', "_").replace(':',"=3A") + "?=");
+                header.append(" =?utf-8?Q?" + QuotedPrintable::encode(replyTo.getName().toUtf8()).replace(' ', "_").replace(':',"=3A") + "?=");
                 break;
             default:
-                header.append(" " + replyTo.getName());
+                header.append(" " + replyTo.getName().toLatin1());
             }
         }
-        header.append(" <" + replyTo.getAddress() + ">\r\n");
+        header.append(" <" + replyTo.getAddress().toLatin1() + ">\r\n");
     }
 
     /* ---------------------------------- */
