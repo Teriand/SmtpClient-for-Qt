@@ -30,7 +30,7 @@ MimePart::MimePart()
 {
     cEncoding = _7Bit;
     prepared = false;
-    cBoundary = "";
+    cBoundary = QLatin1String("");
 }
 
 MimePart::~MimePart()
@@ -147,13 +147,13 @@ void MimePart::writeToDevice(QIODevice &device) const {
     /* Content-Type */
     header.append("Content-Type: ").append(cType);
 
-    if (cName != "")
-        header.append("; name=\"").append(cName).append("\"");
+    if (cName != QLatin1String(""))
+        header.append("; name=\"=?utf-8?b?").append(cName.toUtf8().toBase64()).append("?=\"");
 
-    if (cCharset != "")
+    if (cCharset != QLatin1String(""))
         header.append("; charset=").append(cCharset);
 
-    if (cBoundary != "")
+    if (cBoundary != QLatin1String(""))
         header.append("; boundary=").append(cBoundary);
 
     header.append("\r\n");
