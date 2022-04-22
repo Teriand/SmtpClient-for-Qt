@@ -72,7 +72,11 @@ SmtpClient::SmtpClient(const QString & host, int port, ConnectionType connection
     setConnectionType(connectionType);
 
     connect(socket, &QAbstractSocket::stateChanged,this, &SmtpClient::socketStateChanged);
+#if QT_VERSION >= QT_VERSION_CHECK(5, 15, 0)
     connect(socket, &QAbstractSocket::errorOccurred, this, &SmtpClient::socketError);
+#else
+    connect(socket, QOverload<QAbstractSocket::SocketError>::of(&QAbstractSocket::error), this, &SmtpClient::socketError);
+#endif
     connect(socket, &QIODevice::readyRead, this, &SmtpClient::socketReadyRead);
 }
 
