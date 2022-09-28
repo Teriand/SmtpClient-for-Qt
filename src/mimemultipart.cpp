@@ -20,7 +20,9 @@
 #include <QIODevice>
 #include <QTime>
 #include <QCryptographicHash>
+#if QT_VERSION >= QT_VERSION_CHECK(5, 10, 0)
 #include <QRandomGenerator>
+#endif
 
 const QString MULTI_PART_NAMES[] = {
     "multipart/mixed",         //    Mixed
@@ -39,7 +41,11 @@ MimeMultiPart::MimeMultiPart(MultiPartType type)
     this->cEncoding = _8Bit;
 
     QCryptographicHash md5(QCryptographicHash::Md5);
+#if QT_VERSION >= QT_VERSION_CHECK(5, 10, 0)
     auto rand = QRandomGenerator::global()->generate();
+#else
+    auto rand = qrand();
+#endif
     md5.addData((char*)&rand, sizeof(rand));
     cBoundary = md5.result().toHex();
 }
