@@ -15,14 +15,14 @@
 
   See the LICENSE file for more details.
 */
-
-#include "mimemultipart.h"
 #include <QIODevice>
 #include <QTime>
 #include <QCryptographicHash>
 #if QT_VERSION >= QT_VERSION_CHECK(5, 10, 0)
 #include <QRandomGenerator>
 #endif
+
+#include "mimemultipart.h"
 
 const QString MULTI_PART_NAMES[] = {
     "multipart/mixed",         //    Mixed

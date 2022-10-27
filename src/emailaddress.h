@@ -19,8 +19,9 @@
 #ifndef EMAILADDRESS_H
 #define EMAILADDRESS_H
 
-#include "smtpmime_global.h"
 #include <QString>
+
+#include "smtpmime_global.h"
 
 class SMTP_MIME_EXPORT EmailAddress
 {

@@ -19,9 +19,10 @@
 #ifndef MIMEPART_H
 #define MIMEPART_H
 
-#include "smtpmime_global.h"
 #include <QByteArray>
 #include <QString>
+
+#include "smtpmime_global.h"
 
 class QIODevice;
 

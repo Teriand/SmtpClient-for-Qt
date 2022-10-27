@@ -43,15 +43,13 @@
     as QSslSocket::startClientEncryption()
 
 */
-
-#include "smtpclient.h"
-
 #include <QFileInfo>
 #include <QByteArray>
 #include <QTimer>
 #include <QEventLoop>
 #include <QMetaEnum>
 
+#include "smtpclient.h"
 
 /*!
     \fn SmtpClient::SmtpClient(const QString & host, int port, ConnectionType connectionType)

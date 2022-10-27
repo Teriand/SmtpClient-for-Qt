@@ -15,9 +15,9 @@
 
   See the LICENSE file for more details.
 */
+#include <QFileInfo>
 
 #include "mimefile.h"
-#include <QFileInfo>
 
 /* [1] Constructors and Destructors */
 

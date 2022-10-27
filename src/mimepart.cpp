@@ -17,8 +17,8 @@
 */
 
 #include <QBuffer>
+
 #include "mimepart.h"
-#include "quotedprintable.h"
 #include "mimebase64formatter.h"
 #include "mimeqpformatter.h"
 #include "mimebase64encoder.h"

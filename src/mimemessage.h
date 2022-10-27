@@ -21,14 +21,15 @@
 
 #include <QStringList>
 #include <QTextStream>
+#include <QObject>
 
 #include "smtpmime_global.h"
 #include "mimepart.h"
-#include "mimemultipart.h"
 #include "emailaddress.h"
 
 class SMTP_MIME_EXPORT MimeMessage : public QObject
 {
+    Q_OBJECT
 public:
 
     enum RecipientType {

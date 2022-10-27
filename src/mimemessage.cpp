@@ -15,15 +15,14 @@
 
   See the LICENSE file for more details.
 */
-
-#include "mimemessage.h"
-
 #include <QDebug>
 #include <QDateTime>
 #include <QBuffer>
 #include "quotedprintable.h"
 #include <typeinfo>
 
+#include "mimemessage.h"
+#include "mimemultipart.h"
 /*!
     \class MimeMessage
     \brief Represents a message where content, recipients and sender are added.
