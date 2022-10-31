@@ -21,6 +21,9 @@
 #if QT_VERSION >= QT_VERSION_CHECK(5, 10, 0)
 #include <QRandomGenerator>
 #endif
+#if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
+#include <QByteArrayView>
+#endif
 
 #include "mimemultipart.h"
 
@@ -42,11 +45,16 @@ MimeMultiPart::MimeMultiPart(MultiPartType type)
 
     QCryptographicHash md5(QCryptographicHash::Md5);
 #if QT_VERSION >= QT_VERSION_CHECK(5, 10, 0)
-    auto rand = QRandomGenerator::global()->generate();
+    auto rand = QRandomGenerator::global()->generate64();
 #else
     auto rand = qrand();
 #endif
+
+#if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
+    md5.addData(QByteArrayView((char*)&rand, sizeof(rand)));
+#else
     md5.addData((char*)&rand, sizeof(rand));
+#endif
     cBoundary = md5.result().toHex();
 }
 
