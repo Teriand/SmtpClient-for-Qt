@@ -43,7 +43,7 @@ add_library(${PROJECT_NAME} SHARED
     mimepart.h
     mimetext.h
     smtpclient.h
-    SmtpMime
+    SmtpMime.h
     quotedprintable.h
     mimemultipart.h
     smtpmime_global.h
@@ -73,7 +73,7 @@ target_include_directories(${PROJECT_NAME}
 )
 
 set(public_headers
-    SmtpMime
+    SmtpMime.h
     emailaddress.h
     mimeattachment.h
     mimefile.h
@@ -83,7 +83,6 @@ set(public_headers
     mimepart.h
     mimetext.h
     smtpclient.h
-    SmtpMime
     quotedprintable.h
     mimemultipart.h
     smtpmime_global.h
