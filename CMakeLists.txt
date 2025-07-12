@@ -1,3 +1,5 @@
+cmake_minimum_required(VERSION 3.16.0)
+
 # -DSmtpMime_EXAMPLES=[true|false]
 #  Build the examples.
 #  Default=true
@@ -8,17 +10,20 @@ endif (POLICY CMP0048)
 
 project(SmtpMime VERSION 2.0.0 LANGUAGES CXX)
 
-cmake_minimum_required(VERSION 3.16.0)
+
 SET(CMAKE_COLOR_MAKEFILE ON)
 #SET(CMAKE_VERBOSE_MAKEFILE ON)
 set(CMAKE_AUTOMOC ON)
 
 set(CMAKE_INCLUDE_CURRENT_DIR ON)
 
-option(SMTPMIME_EXAMPES "Build examples" ON)
+option(SMTPMIME_EXAMPES "Build examples" OFF)
 option(SMTPMIME_STATIC "Build library static" OFF)
 
-find_package( Qt5 REQUIRED COMPONENTS Core Network OPTIONAL_COMPONENTS Widgets)
+find_package(Qt NAMES Qt6 Qt5 COMPONENTS Widgets Network REQUIRED)
+find_package(Qt${Qt_VERSION_MAJOR} COMPONENTS Widgets Network REQUIRED)
+
+message(STATUS "Found Qt ${QT_VERSION_MAJOR} VERSION")
 
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY "${CMAKE_CURRENT_BINARY_DIR}/bin")
 set(CMAKE_LIBRARY_OUTPUT_DIRECTORY "${CMAKE_CURRENT_BINARY_DIR}/lib")
@@ -34,7 +39,7 @@ set(HEADERS
     src/mimepart.h
     src/mimetext.h
     src/smtpclient.h
-    src/SmtpMime
+    src/SmtpMime.h
     src/quotedprintable.h
     src/mimemultipart.h
     src/mimecontentformatter.h
@@ -76,7 +81,7 @@ else()
 endif()
 
 target_link_libraries(${PROJECT_NAME}
-     PUBLIC Qt5::Core Qt5::Network
+     PUBLIC Qt${QT_VERSION_MAJOR}::Core Qt${QT_VERSION_MAJOR}::Network
 )
 set_target_properties(${PROJECT_NAME} PROPERTIES VERSION ${${PROJECT_NAME}_VERSION})
 target_include_directories(${PROJECT_NAME} PUBLIC src)
