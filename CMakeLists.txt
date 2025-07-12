@@ -20,7 +20,7 @@ set(CMAKE_INCLUDE_CURRENT_DIR ON)
 option(SMTPMIME_EXAMPES "Build examples" OFF)
 option(SMTPMIME_STATIC "Build library static" OFF)
 
-find_package(Qt NAMES Qt6 Qt5 COMPONENTS Widgets Network REQUIRED)
+find_package(Qt NAMES Qt6 COMPONENTS Widgets Network REQUIRED)
 find_package(Qt${Qt_VERSION_MAJOR} COMPONENTS Widgets Network REQUIRED)
 
 message(STATUS "Found Qt ${QT_VERSION_MAJOR} VERSION")
